@@ -176,10 +176,6 @@ def iniciarCam():
             webcam.release()
             cv2.destroyAllWindows()
             break
-        # if cv2.waitKey(10) | 0xFF == ord('q'): 
-        #     webcam.release() 
-        #     cv2.destroyAllWindows() 
-        #     break
 
 if __name__ == '__main__':
     iniciarCam()
