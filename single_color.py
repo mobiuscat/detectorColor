@@ -1,28 +1,25 @@
+# Python code for Multiple Color Detection 
+import numpy as np 
 import cv2
-import threading
-import numpy as np
 
-class camThread(threading.Thread):
-    def __init__(self, previewName, camID):
-        threading.Thread.__init__(self)
-        self.previewName = previewName
-        self.camID = camID
-    def run(self):
-        print("Starting " + self.previewName)
-        camPreview(self.previewName, self.camID)
+def iniciarCam():
+    # Capturing video through webcam
+    for i in range(2,14):
+        try:
+            webcam = cv2.VideoCapture(i)
+            if webcam.isOpened():
+                webcam.set(3,360) #Width
+                webcam.set(4,240) #Height
+                break
+        except: pass 
 
-def camPreview(previewName, camID):
-    cv2.namedWindow(previewName)
-    webcam = cv2.VideoCapture(camID)
-    webcam.set(3,100) #Width
-    webcam.set(4,150) #Height
+    # Start a while loop 
+    while(1): 
+        
+        # Reading the video from the 
+        # webcam in image frames 
+        _, imageFrame = webcam.read() 
 
-    if webcam.isOpened():
-        rval, imageFrame = webcam.read()
-    else:
-        rval = False
-
-    while rval:
         # Convert the imageFrame in 
         # BGR(RGB color space) to 
         # HSV(hue-saturation-value) 
@@ -45,34 +42,47 @@ def camPreview(previewName, camID):
         # define mask 
         blue_lower = np.array([94, 80, 2], np.uint8) 
         blue_upper = np.array([120, 255, 255], np.uint8) 
-        blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper) 
-    
+        blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper)
+
+
+        white_lower = np.array([0,0,230],np.uint8)
+        white_upper = np.array([172,111,255],np.uint8) 
+        white_mask = cv2.inRange(hsvFrame, white_lower, white_upper)
+
+
+        
+        
         # Morphological Transform, Dilation 
         # for each color and bitwise_and operator 
         # between imageFrame and mask determines 
         # to detect only that particular color 
         kernal = np.ones((5, 5), "uint8") 
-    
+        
         # For red color 
         red_mask = cv2.dilate(red_mask, kernal) 
         res_red = cv2.bitwise_and(imageFrame, imageFrame, 
-                            mask = red_mask) 
-    
+                                mask = red_mask) 
+        
+
+        white_mask = cv2.dilate(white_mask, kernal) 
+        res_white = cv2.bitwise_and(imageFrame, imageFrame, 
+                                mask = white_mask)
+
         # For green color 
         green_mask = cv2.dilate(green_mask, kernal) 
         res_green = cv2.bitwise_and(imageFrame, imageFrame, 
-                                mask = green_mask) 
-    
+                                    mask = green_mask) 
+        
         # For blue color 
         blue_mask = cv2.dilate(blue_mask, kernal) 
         res_blue = cv2.bitwise_and(imageFrame, imageFrame, 
-                            mask = blue_mask) 
+                                mask = blue_mask) 
 
         # Creating contour to track red color 
         contours, hierarchy = cv2.findContours(red_mask, 
-                                        cv2.RETR_TREE, 
-                                        cv2.CHAIN_APPROX_SIMPLE) 
-    
+                                            cv2.RETR_TREE, 
+                                            cv2.CHAIN_APPROX_SIMPLE) 
+        
         for pic, contour in enumerate(contours): 
             area = cv2.contourArea(contour) 
             if(area > 300):
@@ -81,25 +91,44 @@ def camPreview(previewName, camID):
                 imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                         (x + w, y + h), 
                                         (0, 0, 255), 2) 
-            
+                
                 cv2.putText(imageFrame, "Red Colour", (x, y), 
                             cv2.FONT_HERSHEY_SIMPLEX, 1.0, 
-                            (0, 0, 255))     
+                            (0, 0, 255))
 
-        # Creating contour to track green color 
-        contours, hierarchy = cv2.findContours(green_mask, 
+
+        # Creating contour to track white color 
+        contours, hierarchy = cv2.findContours(white_mask, 
                                             cv2.RETR_TREE, 
                                             cv2.CHAIN_APPROX_SIMPLE) 
-    
+        
         for pic, contour in enumerate(contours): 
             area = cv2.contourArea(contour) 
             if(area > 300):
-                print('green')
+                print('white')
+                x, y, w, h = cv2.boundingRect(contour) 
+                imageFrame = cv2.rectangle(imageFrame, (x, y), 
+                                        (x + w, y + h), 
+                                        (0, 0, 0), 2) 
+                
+                cv2.putText(imageFrame, "White Colour", (x, y), 
+                            cv2.FONT_HERSHEY_SIMPLEX, 1.0, 
+                            (0, 0, 0))     
+
+        # Creating contour to track green colo3r 
+        contours, hierarchy = cv2.findContours(green_mask, 
+                                            cv2.RETR_TREE, 
+                                            cv2.CHAIN_APPROX_SIMPLE) 
+        
+        for pic, contour in enumerate(contours): 
+            area = cv2.contourArea(contour) 
+            if(area > 300):
+                print('green') 
                 x, y, w, h = cv2.boundingRect(contour) 
                 imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                         (x + w, y + h), 
                                         (0, 255, 0), 2) 
-            
+                
                 cv2.putText(imageFrame, "Green Colour", (x, y), 
                             cv2.FONT_HERSHEY_SIMPLEX, 
                             1.0, (0, 255, 0)) 
@@ -121,22 +150,13 @@ def camPreview(previewName, camID):
                             cv2.FONT_HERSHEY_SIMPLEX,
                             1.0, (255, 0, 0))
 
-        cv2.imshow(previewName,imageFrame)
-        rval, imageFrame = webcam.read()
-        key = cv2.waitKey(20)
-        if key == 27:  # exit on ESC
+
+        # Program Termination 
+        cv2.imshow("Multiple Color Detection in Real-TIme", imageFrame) 
+        if cv2.waitKey(10) & 0xFF == ord('q'): 
+            webcam.release() 
+            cv2.destroyAllWindows() 
             break
-    cv2.destroyWindow(previewName)
 
-# Create threads as follows
-thread1 = camThread("Camera 1", 0)
-thread2 = camThread("Camera 2", 4)
-thread3 = camThread("Camera 3", 5)
-thread4 = camThread("Camera 4", 6)
-
-thread1.start()
-thread2.start()
-thread3.start()
-thread4.start()
-print()
-print("Active threads", threading.activeCount())
+if __name__ == '__main__':
+    iniciarCam()
