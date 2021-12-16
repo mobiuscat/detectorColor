@@ -65,7 +65,7 @@ def iniciarCam():
         res_red = cv2.bitwise_and(imageFrame, imageFrame, 
                                 mask = red_mask) 
         
-
+        # For white color
         white_mask = cv2.dilate(white_mask, kernal) 
         res_white = cv2.bitwise_and(imageFrame, imageFrame, 
                                 mask = white_mask)
@@ -87,7 +87,6 @@ def iniciarCam():
         
         for pic, contour in enumerate(contours): 
             area = cv2.contourArea(contour)
-            print(area)
             if(area > 300):
                 if puntajeRojo == 0:
                     puntajeRojo = 50
@@ -169,10 +168,9 @@ def iniciarCam():
         stop = t2-t1
 
         puntajeTotal = puntajeRojo+puntajeVerde+puntajeAzul+puntajeBlanco
-        # print(puntajeTotal)
-        print(stop)
         cv2.waitKey(1)
-        if stop >5:
+        if stop > 6:
+            print(puntajeTotal)
             webcam.release()
             cv2.destroyAllWindows()
             break
