@@ -4,12 +4,10 @@ import cv2
 
 def iniciarCam():
     # Capturing video through webcam
-    for i in range(2,14):
+    for i in range(-2,14):
         try:
             webcam = cv2.VideoCapture(i)
             if webcam.isOpened():
-                webcam.set(3,360) #Width
-                webcam.set(4,240) #Height
                 break
         except: pass 
 
