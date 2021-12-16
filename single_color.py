@@ -1,8 +1,14 @@
 # Python code for Multiple Color Detection 
 import numpy as np 
 import cv2
+import time
 
 def iniciarCam():
+    puntajeAzul = 0
+    puntajeRojo = 0
+    puntajeVerde = 0
+    puntajeBlanco = 0
+    puntajeTotal = 0
     # Capturing video through webcam
     for i in range(-2,14):
         try:
@@ -11,6 +17,7 @@ def iniciarCam():
                 break
         except: pass 
 
+    t1 = time.time()
     # Start a while loop 
     while(1): 
         
@@ -47,9 +54,6 @@ def iniciarCam():
         white_upper = np.array([172,111,255],np.uint8) 
         white_mask = cv2.inRange(hsvFrame, white_lower, white_upper)
 
-
-        
-        
         # Morphological Transform, Dilation 
         # for each color and bitwise_and operator 
         # between imageFrame and mask determines 
@@ -82,9 +86,12 @@ def iniciarCam():
                                             cv2.CHAIN_APPROX_SIMPLE) 
         
         for pic, contour in enumerate(contours): 
-            area = cv2.contourArea(contour) 
+            area = cv2.contourArea(contour)
+            print(area)
             if(area > 300):
-                print('red')
+                if puntajeRojo == 0:
+                    puntajeRojo = 50
+                # print('red')
                 x, y, w, h = cv2.boundingRect(contour) 
                 imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                         (x + w, y + h), 
@@ -103,7 +110,9 @@ def iniciarCam():
         for pic, contour in enumerate(contours): 
             area = cv2.contourArea(contour) 
             if(area > 300):
-                print('white')
+                # print('white')
+                if puntajeBlanco == 0:
+                    puntajeBlanco = 50
                 x, y, w, h = cv2.boundingRect(contour) 
                 imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                         (x + w, y + h), 
@@ -121,7 +130,9 @@ def iniciarCam():
         for pic, contour in enumerate(contours): 
             area = cv2.contourArea(contour) 
             if(area > 300):
-                print('green') 
+                # print('green')
+                if puntajeVerde == 0:
+                    puntajeVerde = 50 
                 x, y, w, h = cv2.boundingRect(contour) 
                 imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                         (x + w, y + h), 
@@ -138,7 +149,9 @@ def iniciarCam():
         for pic, contour in enumerate(contours): 
             area = cv2.contourArea(contour)
             if(area > 300):
-                print('blue')
+                # print('blue')
+                if puntajeAzul == 0:
+                    puntajeAzul = 50
                 x, y, w, h = cv2.boundingRect(contour)
                 imageFrame = cv2.rectangle(imageFrame, (x, y),
                                         (x + w, y + h),
@@ -150,11 +163,23 @@ def iniciarCam():
 
 
         # Program Termination 
-        cv2.imshow("Multiple Color Detection in Real-TIme", imageFrame) 
-        if cv2.waitKey(10) & 0xFF == ord('q'): 
-            webcam.release() 
-            cv2.destroyAllWindows() 
+        cv2.imshow("Multiple Color Detection in Real-TIme", imageFrame)
+
+        t2 = time.time()
+        stop = t2-t1
+
+        puntajeTotal = puntajeRojo+puntajeVerde+puntajeAzul+puntajeBlanco
+        # print(puntajeTotal)
+        print(stop)
+        cv2.waitKey(1)
+        if stop >5:
+            webcam.release()
+            cv2.destroyAllWindows()
             break
+        # if cv2.waitKey(10) | 0xFF == ord('q'): 
+        #     webcam.release() 
+        #     cv2.destroyAllWindows() 
+        #     break
 
 if __name__ == '__main__':
     iniciarCam()
