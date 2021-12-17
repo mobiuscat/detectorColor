@@ -76,7 +76,7 @@ def camPreview(previewName, camID):
         for pic, contour in enumerate(contours): 
             area = cv2.contourArea(contour) 
             if(area > 300):
-                print('red')
+                # print('red')
                 x, y, w, h = cv2.boundingRect(contour) 
                 imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                         (x + w, y + h), 
@@ -94,7 +94,7 @@ def camPreview(previewName, camID):
         for pic, contour in enumerate(contours): 
             area = cv2.contourArea(contour) 
             if(area > 300):
-                print('green')
+                # print('green')
                 x, y, w, h = cv2.boundingRect(contour) 
                 imageFrame = cv2.rectangle(imageFrame, (x, y), 
                                         (x + w, y + h), 
@@ -111,7 +111,7 @@ def camPreview(previewName, camID):
         for pic, contour in enumerate(contours): 
             area = cv2.contourArea(contour)
             if(area > 300):
-                print('blue')
+                # print('blue')
                 x, y, w, h = cv2.boundingRect(contour)
                 imageFrame = cv2.rectangle(imageFrame, (x, y),
                                         (x + w, y + h),
