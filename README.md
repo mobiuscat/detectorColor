@@ -12,7 +12,7 @@ sudo apt-get update && sudo apt-get upgrade -y
 python3 -m install -U pip numpy
 ```
 ```
-python3 -m install opencv-python
+python3 -m install opencv-python rpyc
 ```
 
 ```
