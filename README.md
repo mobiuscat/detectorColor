@@ -9,10 +9,10 @@ interfaces -> camera -> enable
 sudo apt-get update && sudo apt-get upgrade -y
 ```
 ```
-python3 -m install -U pip numpy
+python3 -m pip install -U pip numpy
 ```
 ```
-python3 -m install opencv-python rpyc
+python3 -m pip install opencv-python rpyc
 ```
 
 ```
