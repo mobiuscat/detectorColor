@@ -130,8 +130,8 @@ def camPreview(previewName, camID):
 
 # Create threads as follows
 thread1 = camThread("Camera 1", 0)
-thread2 = camThread("Camera 2", 4)
-thread3 = camThread("Camera 3", 5)
+thread2 = camThread("Camera 2", 2)
+thread3 = camThread("Camera 3", 4)
 thread4 = camThread("Camera 4", 6)
 
 thread1.start()
