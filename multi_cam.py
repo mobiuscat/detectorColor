@@ -14,8 +14,8 @@ class camThread(threading.Thread):
 def camPreview(previewName, camID):
     cv2.namedWindow(previewName)
     webcam = cv2.VideoCapture(camID)
-    webcam.set(3,100) #Width
-    webcam.set(4,150) #Height
+    webcam.set(3,3) #Width
+    webcam.set(4,3) #Height
 
     if webcam.isOpened():
         rval, imageFrame = webcam.read()
