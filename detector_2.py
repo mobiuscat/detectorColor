@@ -22,6 +22,8 @@ class detectorColor(rpyc.Service):
         self.valorPelotaVerde = int(self.parser.get('DET2','Puntaje_verde_2'))
         self.valorPelotaBlanca = int(self.parser.get('DET2','Puntaje_blanco_2'))
 
+        self.puntajeMagenta=self.puntajeCyan=self.puntajeVerde=self.puntajeBlanco=0
+
         
     def on_connect(self,args=None):
         print("Cliente conectado")
