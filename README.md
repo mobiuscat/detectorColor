@@ -1,13 +1,24 @@
 # detectorColor
 
+
+### Habilitar la cámara de la raspberry
+__Esta configuración solo se hace cuando se utiliza la raspicam, para una webcam usb no es necesario__
 ```
 sudo raspi-config
 ```
 interfaces -> camera -> enable
 
+
+### Dependencias
 ```
 sudo apt-get update && sudo apt-get upgrade -y
 ```
+```
+sudo apt-get install git libcblas-dev libhdf5-dev libhdf5-serial-dev libatlas-base-dev libjasper-dev libqtgui4 libqt4-test -y
+```
+
+
+### Librerías
 ```
 python3 -m pip install -U pip numpy
 ```
@@ -15,16 +26,8 @@ python3 -m pip install -U pip numpy
 python3 -m pip install opencv-python rpyc
 ```
 
-```
-sudo apt-get install git
-sudo apt-get install libcblas-dev
-sudo apt-get install libhdf5-dev
-sudo apt-get install libhdf5-serial-dev
-sudo apt-get install libatlas-base-dev
-sudo apt-get install libjasper-dev 
-sudo apt-get install libqtgui4 
-sudo apt-get install libqt4-test
-```
+
+### Config del repositorio local
 ```
 cd ~/Documents
 git clone https://github.com/mobiuscat/detectorColor.git
