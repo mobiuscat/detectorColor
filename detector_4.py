@@ -40,7 +40,6 @@ class detectorColor(rpyc.Service):
 
     def main(self):
         self.cam = cv2.VideoCapture(self.parser.get('DET4','Path_cam_4'))
-        time1 = time.time()
         time.sleep(0.1)
         while True:
             _, imageFrame = self.cam.read() 
