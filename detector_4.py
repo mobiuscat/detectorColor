@@ -28,7 +28,7 @@ class detectorColor(rpyc.Service):
     def on_connect(self,args=None):
         print("Cliente conectado")
 
-    def exposed_iniciarJuego(self,args=None):
+    def exposed_iniciarCam(self,args=None):
         self.puntajeMagenta=self.puntajeCyan=self.puntajeVerde=self.puntajeBlanco=0
         self.main()
 

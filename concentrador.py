@@ -26,7 +26,7 @@ def controlarServidor(Servidor, IP, Puerto):
                         Servidor = rpyc.connect(IP,Puerto)
                         print("Conectado al servidor ", IP, " en el puerto", Puerto)
                     except:
-                        print("Fallo la conexión al Servidor ", IP)
+                        print("Fallo la conexión con el puerto ", Puerto)
                         Servidor = None
                 else:
                     # Estoy conectado, intento controlar que sea así.
@@ -34,28 +34,30 @@ def controlarServidor(Servidor, IP, Puerto):
                         Servidor.ping()
                     except:
                         # La conexión falló
-                        print("Se corto la conexión al Servidor ", IP)
+                        print("Se corto la conexión con el puerto ", Puerto)
                         Servidor = None
             else:
                 Servidor = None
             return Servidor
 
 def controlarCam(conexion=()):
+    for idDetector, elemento in enumerate(conexion):
+        if not elemento is None:
+            try:
+                elemento.root.iniciarCam()
+                print("Detector {} OK".format(idDetector+1))
+            except:
+                print("No se puede obtener datos del detector {}".format(idDetector+1))
+        else: pass
 
-    if not conexion == ():
-        for idDetector, elemento in enumerate(conexion):
-            print(idDetector)
-            try: elemento.root.iniciarJuego()
-            except: pass
 
-
-
-det_1 = controlarServidor(det_1,servidor,det_1_port)
-det_2 = controlarServidor(det_2,servidor,det_2_port)
-det_3 = controlarServidor(det_3,servidor,det_3_port)
-det_4 = controlarServidor(det_4,servidor,det_4_port)
 
 while True:
+    det_1 = controlarServidor(det_1,servidor,det_1_port)
+    det_2 = controlarServidor(det_2,servidor,det_2_port)
+    det_3 = controlarServidor(det_3,servidor,det_3_port)
+    det_4 = controlarServidor(det_4,servidor,det_4_port)
+
     controlarCam((det_1,det_2,det_3,det_4))
 
 
