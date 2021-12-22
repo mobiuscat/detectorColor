@@ -42,13 +42,11 @@ def controlarServidor(Servidor, IP, Puerto):
 
 def controlarCam(conexion=()):
 
-    def tomarFoto(cam):
-        cam.root.iniciarJuego()
-        print('Foto tomada')
-
     if not conexion == ():
-        for elemento in conexion:
-            tomarFoto(elemento)
+        for idDetector, elemento in enumerate(conexion):
+            print(idDetector)
+            try: elemento.root.iniciarJuego()
+            except: pass
 
 
 
@@ -57,7 +55,8 @@ det_2 = controlarServidor(det_2,servidor,det_2_port)
 det_3 = controlarServidor(det_3,servidor,det_3_port)
 det_4 = controlarServidor(det_4,servidor,det_4_port)
 
-controlarCam((det_1,det_2,det_3,det_4))
+while True:
+    controlarCam((det_1,det_2,det_3,det_4))
 
 
         
