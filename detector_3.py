@@ -14,13 +14,13 @@ class detectorColor(rpyc.Service):
         self.parser = ConfigParser()
         self.parser.read(CONFIG_FILE)
 
-        self.id = self.parser.get('DET1','ID_detector_1')
+        self.id = self.parser.get('DET3','ID_detector_3')
         self.modoFoto = eval(self.parser.get('DEFAULT','modoFoto'))
 
-        self.valorPelotaMagenta = int(self.parser.get('DET1','Puntaje_magenta_1'))
-        self.valorPelotaCyan = int(self.parser.get('DET1','Puntaje_cyan_1'))
-        self.valorPelotaVerde = int(self.parser.get('DET1','Puntaje_verde_1'))
-        self.valorPelotaBlanca = int(self.parser.get('DET1','Puntaje_blanco_1'))
+        self.valorPelotaMagenta = int(self.parser.get('DET3','Puntaje_magenta_3'))
+        self.valorPelotaCyan = int(self.parser.get('DET3','Puntaje_cyan_3'))
+        self.valorPelotaVerde = int(self.parser.get('DET3','Puntaje_verde_3'))
+        self.valorPelotaBlanca = int(self.parser.get('DET3','Puntaje_blanco_3'))
 
         
     def on_connect(self,args=None):
@@ -39,7 +39,7 @@ class detectorColor(rpyc.Service):
                 'timestamp':time.time()}
 
     def main(self):
-        self.cam = cv2.VideoCapture(self.parser.get('DET1','Path_cam_1'))
+        self.cam = cv2.VideoCapture(self.parser.get('DET3','Path_cam_3'))
         time.sleep(0.1)
         while True:
             _, imageFrame = self.cam.read() 
@@ -178,5 +178,5 @@ class detectorColor(rpyc.Service):
 
 if __name__ == '__main__':
     servicio = detectorColor()
-    server = ThreadedServer(servicio,port = 5005)
+    server = ThreadedServer(servicio,port = 5007)
     server.start()
