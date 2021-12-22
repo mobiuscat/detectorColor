@@ -14,7 +14,7 @@ interfaces -> camera -> enable
 sudo apt-get update && sudo apt-get upgrade -y
 ```
 ```
-sudo apt-get install git libcblas-dev libhdf5-dev libhdf5-serial-dev libatlas-base-dev libjasper-dev libqtgui4 libqt4-test -y
+sudo apt-get install git libhdf5-dev libhdf5-serial-dev libatlas-base-dev libjasper-dev -y
 ```
 
 
