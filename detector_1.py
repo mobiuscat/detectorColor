@@ -9,6 +9,7 @@ from configparser import ConfigParser
 
 
 class detectorColor(rpyc.Service):
+
     def __init__(self):
         CONFIG_FILE ='config.ini'
         self.parser = ConfigParser()
@@ -42,13 +43,22 @@ class detectorColor(rpyc.Service):
 
     def main(self):
         self.cam = cv2.VideoCapture(self.parser.get('DET1','Path_cam_1'))
+        self.cam.set(39,0) # Auto focus off
+        self.cam.set(21,0) # Auto exposition off
+        self.cam.set(28,80) # Foco a la pelota
+        self.cam.set(12,255) # Saturacion
+        self.cam.set(11,255) # Contraste
+        self.cam.set(10,40) # Brillo
+        self.cam.set(14,50) #Ganancia
+        self.cam.set(13,255)
         time.sleep(0.1)
         while True:
             _, imageFrame = self.cam.read() 
 
             imageFrame = cv2.resize(imageFrame,(500,500))
-            imageFrame = cv2.rectangle(imageFrame,(0,0),(500,125),(0,0,0),-1)
-
+            imageFrame = cv2.rectangle(imageFrame,(0,0),(500,250),(0,0,0),-1)
+            imageFrame = cv2.rectangle(imageFrame,(0,450),(500,500),(0,0,0),-1)
+            imageFrame = cv2.medianBlur(imageFrame,5)
             hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV) 
 
             red_lower = np.array(json.loads(self.parser.get('COLORES','red_lower')), np.uint8) 
@@ -65,7 +75,7 @@ class detectorColor(rpyc.Service):
 
             white_lower = np.array(json.loads(self.parser.get('COLORES','white_lower')),np.uint8)
             white_upper = np.array(json.loads(self.parser.get('COLORES','white_upper')),np.uint8)
-            white_mask = cv2.inRange(hsvFrame, white_lower, white_upper)
+            white_mask = cv2.inRange(hsvFrame, white_lower, white_upper,0)
 
             kernal = np.ones((5, 5), "uint8") 
             
@@ -88,7 +98,8 @@ class detectorColor(rpyc.Service):
             
             for pic, contour in enumerate(contours): 
                 area = cv2.contourArea(contour)
-                if(area > 300):
+                print(area)
+                if(area > 7000):
                     if self.puntajeMagenta == 0:
                         self.puntajeMagenta = self.valorPelotaMagenta
                     x, y, w, h = cv2.boundingRect(contour) 
@@ -107,8 +118,9 @@ class detectorColor(rpyc.Service):
                                                 cv2.CHAIN_APPROX_SIMPLE) 
             
             for pic, contour in enumerate(contours): 
-                area = cv2.contourArea(contour) 
-                if(area > 300):
+                area = cv2.contourArea(contour)
+                if(area > 7000):
+                    # print (area)
                     if self.puntajeBlanco == 0:
                         self.puntajeBlanco = self.valorPelotaBlanca
                     x, y, w, h = cv2.boundingRect(contour) 
@@ -127,7 +139,7 @@ class detectorColor(rpyc.Service):
             
             for pic, contour in enumerate(contours): 
                 area = cv2.contourArea(contour) 
-                if(area > 300):
+                if(area > 7000):
                     if self.puntajeVerde == 0:
                         self.puntajeVerde = self.valorPelotaVerde
                     x, y, w, h = cv2.boundingRect(contour) 
@@ -145,7 +157,7 @@ class detectorColor(rpyc.Service):
                                                 cv2.CHAIN_APPROX_SIMPLE) 
             for pic, contour in enumerate(contours): 
                 area = cv2.contourArea(contour)
-                if(area > 300):
+                if(area > 7000):
                     if self.puntajeCyan == 0:
                         self.puntajeCyan = self.valorPelotaCyan
                     x, y, w, h = cv2.boundingRect(contour)
@@ -159,11 +171,11 @@ class detectorColor(rpyc.Service):
 
 
             # Program Termination
-            print(self.exposed_getPuntaje())
+            # print(self.exposed_getPuntaje())
 
             if self.modoFoto:
-                # cv2.imwrite('pepe.png',imageFrame)
-                self.cam.release()
+                #cv2.imwrite('pepe.png',imageFrame)
+                #self.cam.release()
                 cv2.destroyAllWindows()
                 break
 
