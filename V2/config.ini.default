@@ -1,0 +1,77 @@
+[DEFAULT]
+
+Servidor = localhost
+;Servidor = 192.168.0.104
+; Config concentrador
+ID_CONCENTRADOR = 1
+; Tiempo de espera entre cada consulta
+Tiempo_espera = 1
+
+; True: Toma un frame y apaga la cam
+; False: Video continuo
+modoFoto = True
+
+[RAMDISK]
+
+DIRECTORIO_TEMPORAL = /tmp/ram/
+RAMDISK = 100
+
+[COLORES]
+; JSON
+
+red_lower_1:[8,80,20]
+red_upper_1:[12,255,255]
+
+red_lower_2:[135, 80, 20]
+red_upper_2:[179, 255, 255]
+
+green_lower:[40, 50, 20]
+green_upper:[75, 255, 255]
+
+blue_lower:[88, 30, 20]
+blue_upper:[125, 255, 255]
+
+white_lower:[0,0,125]
+white_upper:[180,30,255]
+
+
+[DET1]
+; Config Cámara 1
+ID_detector_1 = 1
+Puerto_detector_1 = 5005
+Path_cam_1 = /dev/v4l/by-id/usb-Chicony_Corp._Lenovo_EasyCamera-video-index0
+Puntaje_magenta_1 = 1
+Puntaje_cyan_1 = 1
+Puntaje_verde_1 = 1
+Puntaje_blanco_1 = 1
+
+[DET2]
+; Config Cámara 2
+ID_detector_2 = 2
+Puerto_detector_2 = 5006
+Path_cam_2 = /dev/v4l/by-id/usb-Chicony_Corp._Lenovo_EasyCamera-video-index0
+Puntaje_magenta_2 = 2
+Puntaje_cyan_2 = 2
+Puntaje_verde_2 = 2
+Puntaje_blanco_2 = 2
+
+[DET3]
+; Config Cámara 3
+ID_detector_3 = 3
+Puerto_detector_3 = 5007
+Path_cam_3 = /dev/v4l/by-id/usb-Chicony_Corp._Lenovo_EasyCamera-video-index0
+Puntaje_magenta_3 = 3
+Puntaje_cyan_3 = 3
+Puntaje_verde_3 = 3
+Puntaje_blanco_3 = 3
+
+
+[DET4]
+; Config Cámara 4
+ID_detector_4 = 4
+Puerto_detector_4 = 5008
+Path_cam_4 = /dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_F88DC27F-video-index0
+Puntaje_magenta_4 = 4
+Puntaje_cyan_4 = 4
+Puntaje_verde_4 = 4
+Puntaje_blanco_4 = 4
